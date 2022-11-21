@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Wifi Direct P2P</string>
+    <string name="client_stop">Client Stop</string>
+    <string name="send_string">Send string</string>
+    <string name="received_data">Received Data</string>
+    <string name="server_stop">Server stop</string>
+    <string name="server_start">Server start</string>
+    <string name="configure">Configure</string>
+    <string name="available_devices">Available devices</string>
+    <string name="connect">Connect</string>
+    <string name="stop_discovery">STOP DISCOVERY</string>
+    <string name="start_discovery">START DISCOVERY</string>
+    <string name="status">Status</string>
+    <string name="p2p_status">P2P Status</string>
+    <string name="this_is_a_sample_text">This is a sample text.</string>
+</resources>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.shubhammittal.wifidirectp2p.MainActivity"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/main_activity_textView_wifi_p2p_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/p2p_status" />
+
+            <TextView
+                android:id="@+id/main_activity_textView_discovery_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/status" />
+
+            <TextView
+                android:id="@+id/main_activity_textView_connection_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/status" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/main_activity_button_discover_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_discovery"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/main_activity_button_discover_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stop_discovery"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/main_activity_button_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/connect" />
+
+
+            <TextView
+                android:id="@+id/textView_available_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/available_devices" />
+
+            <ListView
+                android:id="@+id/main_activity_list_view_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="NestedScrolling">
+            </ListView>
+
+
+            <Button
+                android:id="@+id/main_activity_button_configure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/configure" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/main_activity_button_server_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/server_start"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:id="@+id/main_activity_button_server_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/server_stop"
+                    style="?android:attr/buttonBarButtonStyle" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/main_activity_received_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/received_data" />
+
+            <TextView
+                android:id="@+id/main_activity_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/main_activity_button_client_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/send_string"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:id="@+id/main_activity_button_client_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/client_stop"
+                    style="?android:attr/buttonBarButtonStyle" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/main_activity_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/this_is_a_sample_text"
+                android:inputType="text"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
