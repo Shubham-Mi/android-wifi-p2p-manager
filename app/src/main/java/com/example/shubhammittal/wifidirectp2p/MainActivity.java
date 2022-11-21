@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, WifiP2pManager.ConnectionInfoListener {
     private static final String TAG = "MainActivity";
     WifiP2pManager mManager;
@@ -178,6 +180,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setStatusView(int status) {
+
+    }
+
+    public void setDeviceList(ArrayList<WifiP2pDevice> deviceDetails) {
 
     }
 }

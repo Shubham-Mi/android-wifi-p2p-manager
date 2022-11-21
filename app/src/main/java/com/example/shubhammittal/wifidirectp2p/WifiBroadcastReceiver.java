@@ -1,5 +1,6 @@
 package com.example.shubhammittal.wifidirectp2p;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
         this.mActivity = mActivity;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
@@ -36,7 +38,8 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
             Log.d(TAG, "onReceive: WIFI_P2P_PEERS_CHANGED_ACTION");
             if (mManager != null) {
-//                TODO: myPeerListener
+                MyPeerListener myPeerListener = new MyPeerListener(mActivity);
+                mManager.requestPeers(mChannel, myPeerListener);
             }
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
             if (mManager != null) {
