@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,10 +46,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textViewReceivedData;
     TextView textViewReceivedDataStatus;
 
+//    TODO: serviceDiscovery and SocketDiscoveryThread declaration
+
     static boolean stateDiscovery = false;
     static boolean stateWifi = false;
+    public static boolean stateConnection = false;
+    public static String IP = null;
+    public static boolean IS_OWNER = false;
 
     WifiP2pDevice[] deviceListItems;
+    ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +131,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    public void setDeviceList(ArrayList<WifiP2pDevice> deviceDetails) {
+        deviceListItems = new WifiP2pDevice[deviceDetails.size()];
+        String[] deviceNames = new String[deviceDetails.size()];
+
+        for (int i = 0; i < deviceDetails.size(); i++) {
+            deviceListItems[i] = deviceDetails.get(i);
+            deviceNames[i] = deviceDetails.get(i).deviceName;
+        }
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, deviceNames);
+        listViewDevices.setAdapter(mAdapter);
+    }
+
+    public void setStatusView(int status) {
+        switch (status) {
+            case Constants.DISCOVERY_INITIATED:
+                stateDiscovery = true;
+                textViewDiscoveryStatus.setText(R.string.discovery_initiated);
+                break;
+            case Constants.DISCOVERY_STOPPED:
+                stateDiscovery = false;
+                textViewDiscoveryStatus.setText(R.string.discovery_stopped);
+                break;
+            case Constants.P2P_WIFI_ENABLED:
+                stateWifi = true;
+                textViewWifiP2PStatus.setText(R.string.p2p_wifi_enabled);
+                buttonDiscoveryStart.setEnabled(true);
+                buttonDiscoveryStop.setEnabled(true);
+                break;
+            case Constants.P2P_WIFI_DISABLED:
+                stateWifi = false;
+                textViewWifiP2PStatus.setText(R.string.p2p_wifi_disabled);
+                buttonDiscoveryStart.setEnabled(false);
+                buttonDiscoveryStop.setEnabled(false);
+                break;
+            case Constants.NETWORK_CONNECT:
+                stateConnection = true;
+                textViewConnectionStatus.setText(R.string.connected);
+                break;
+            case Constants.NETWORK_DISCONNECT:
+                stateConnection = true;
+                textViewConnectionStatus.setText(R.string.disconnected);
+                break;
+            default:
+                Log.d(TAG, "setStatusView: Unknown Status");
+                break;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void connect(final WifiP2pDevice device) {
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+        Log.d(TAG, "Trying to connect: " + device.deviceName);
+        mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "onSuccess: Connected to: " + device.deviceName);
+                Toast.makeText(MainActivity.this, "Connection Successful with " + device.deviceName, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                if (reason == WifiP2pManager.P2P_UNSUPPORTED) {
+                    Log.d(TAG, "P2P unsupported");
+                    Toast.makeText(MainActivity.this, "Failed to Make connection: P2P Unsupported", Toast.LENGTH_SHORT).show();
+                } else if (reason == WifiP2pManager.ERROR) {
+                    Log.d(TAG, "Error");
+                    Toast.makeText(MainActivity.this, "Failed to Make connection: Error", Toast.LENGTH_SHORT).show();
+                } else if (reason == WifiP2pManager.BUSY) {
+                    Log.d(TAG, "Busy");
+                    Toast.makeText(MainActivity.this, "Failed to Make connection: Busy", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -162,28 +248,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void connect(final WifiP2pDevice device) {
-
-    }
-
     private void stopPeersDiscover() {
-
+//        TODO: complete stopPeersDiscover function
     }
 
     private void startPeersDiscover() {
-
+//        TODO: complete startPeersDiscover function
     }
 
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
-
-    }
-
-    public void setStatusView(int status) {
-
-    }
-
-    public void setDeviceList(ArrayList<WifiP2pDevice> deviceDetails) {
-
+//        TODO: complete onConnectionInfoAvailable function
     }
 }
