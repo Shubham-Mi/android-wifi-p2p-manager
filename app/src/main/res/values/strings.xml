@@ -13,4 +13,5 @@
     <string name="status">Status</string>
     <string name="p2p_status">P2P Status</string>
     <string name="this_is_a_sample_text">This is a sample text.</string>
+    <string name="data">Data</string>
 </resources>
