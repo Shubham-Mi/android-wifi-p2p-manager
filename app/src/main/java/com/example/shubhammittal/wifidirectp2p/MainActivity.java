@@ -61,12 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        TODO: serviceDiscovery
+//        TODO: serviceDiscovery and serverSocketThread
         setUpUI();
         mManager = (WifiP2pManager) getSystemService(WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
         mReceiver = new WifiBroadcastReceiver(mManager, mChannel, this);
-//        TODO: serverSocketThread
     }
 
     @Override
@@ -208,6 +207,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    @SuppressLint("MissingPermission")
+    private void startPeersDiscover() {
+        setDeviceList(new ArrayList<>());
+        Log.d(TAG, "startPeersDiscover()");
+        mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                stateDiscovery = true;
+                Log.d(TAG, "startPeersDiscover: starting peer discovery");
+                Toast.makeText(MainActivity.this, "Peer Discovery Started", Toast.LENGTH_SHORT).show();
+                MyPeerListener myPeerListener = new MyPeerListener(MainActivity.this);
+                mManager.requestPeers(mChannel, myPeerListener);
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                stateDiscovery = false;
+                if (reason == WifiP2pManager.P2P_UNSUPPORTED) {
+                    Log.d(TAG, "P2P unsupported");
+                    Toast.makeText(MainActivity.this, "peer discovery failed : P2P Unsupported", Toast.LENGTH_SHORT).show();
+                } else if (reason == WifiP2pManager.ERROR) {
+                    Log.d(TAG, "Error");
+                    Toast.makeText(MainActivity.this, "peer discovery failed : Error", Toast.LENGTH_SHORT).show();
+                } else if (reason == WifiP2pManager.BUSY) {
+                    Log.d(TAG, "Busy");
+                    Toast.makeText(MainActivity.this, "peer discovery failed : Busy", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void stopPeersDiscover() {
+        mManager.stopPeerDiscovery(mChannel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                stateDiscovery = false;
+                Log.d(TAG, "onSuccess: Peer Discovery Stopped");
+                Toast.makeText(MainActivity.this, "Peer Discovery Stopped", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int i) {
+                Log.d(TAG, "onFailure: Stopping Peer Discovery Failed");
+                Toast.makeText(MainActivity.this, "Stopping Peer Discovery Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
+        Log.d(TAG, "wifiP2pInfo.groupOwnerAddress.getHostAddress() " + wifiP2pInfo.groupOwnerAddress.getHostAddress());
+        IP = wifiP2pInfo.groupOwnerAddress.getHostAddress();
+        IS_OWNER = wifiP2pInfo.isGroupOwner;
+
+        if (IS_OWNER) {
+            buttonClientStop.setVisibility(View.GONE);
+            buttonClientStart.setVisibility(View.GONE);
+            editTextInput.setVisibility(View.GONE);
+
+            buttonServerStop.setVisibility(View.VISIBLE);
+            buttonServerStart.setVisibility(View.VISIBLE);
+
+            textViewReceivedData.setVisibility(View.VISIBLE);
+            textViewReceivedDataStatus.setVisibility(View.VISIBLE);
+        } else {
+            buttonClientStart.setVisibility(View.VISIBLE);
+            editTextInput.setVisibility(View.VISIBLE);
+            buttonServerStop.setVisibility(View.GONE);
+            buttonServerStart.setVisibility(View.GONE);
+            textViewReceivedData.setVisibility(View.GONE);
+            textViewReceivedDataStatus.setVisibility(View.GONE);
+        }
+
+        Toast.makeText(MainActivity.this, "Configuration Completed", Toast.LENGTH_SHORT).show();
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -246,18 +321,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
-    }
-
-    private void stopPeersDiscover() {
-//        TODO: complete stopPeersDiscover function
-    }
-
-    private void startPeersDiscover() {
-//        TODO: complete startPeersDiscover function
-    }
-
-    @Override
-    public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
-//        TODO: complete onConnectionInfoAvailable function
     }
 }
