@@ -311,7 +311,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //              TODO: serverSocketThread not
                 break;
             case R.id.main_activity_button_client_start:
-//              TODO: clientSocket
+                String dataToSend = editTextInput.getText().toString();
+                ClientSocket clientSocket = new ClientSocket(dataToSend);
+                clientSocket.execute();
                 break;
             case R.id.main_activity_button_client_stop:
 //              TODO: clientSocket not
