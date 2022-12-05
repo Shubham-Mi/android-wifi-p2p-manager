@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textViewReceivedData;
     TextView textViewReceivedDataStatus;
 
-//    TODO: serviceDiscovery declaration
     ServerSocketThread serverSocketThread;
+    ServiceDiscovery serviceDiscovery;
 
     static boolean stateDiscovery = false;
     static boolean stateWifi = false;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        TODO: serviceDiscovery
+        serviceDiscovery = new ServiceDiscovery();
         serverSocketThread = new ServerSocketThread();
         setUpUI();
         mManager = (WifiP2pManager) getSystemService(WIFI_P2P_SERVICE);
@@ -323,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.main_activity_button_client_start:
+                serviceDiscovery.startRegistrationAndDiscovery(mManager, mChannel);
                 String dataToSend = editTextInput.getText().toString();
                 ClientSocket clientSocket = new ClientSocket(dataToSend);
                 clientSocket.execute();
