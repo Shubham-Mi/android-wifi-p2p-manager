@@ -54,7 +54,7 @@ public class ClientSocket extends AsyncTask {
             outputStream.close();
             inputStream.close();
         } catch (IOException e) {
-            Log.d(TAG, "sendData: " + e.toString());
+            e.printStackTrace();
         } finally {
             try {
                 socket.close();

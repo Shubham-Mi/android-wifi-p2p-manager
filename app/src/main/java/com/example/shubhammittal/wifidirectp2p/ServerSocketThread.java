@@ -18,11 +18,7 @@ public class ServerSocketThread extends AsyncTask {
     OnUpdateListener listener;
 
     public interface OnUpdateListener {
-        public void onUpdate(String data);
-    }
-
-    public boolean isInterrupted() {
-        return interrupted;
+        void onUpdate(String data);
     }
 
     public void setInterrupted(boolean interrupted) {

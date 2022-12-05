@@ -6,11 +6,9 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MyPeerListener implements WifiP2pManager.PeerListListener {
     private static final String TAG = "MyPeerListener";
-    private final List<WifiP2pDevice> peers= new ArrayList<>();
     public MainActivity mainActivity;
 
     public MyPeerListener(MainActivity mainActivity) {
