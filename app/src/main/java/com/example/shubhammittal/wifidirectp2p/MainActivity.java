@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textViewReceivedData;
     TextView textViewReceivedDataStatus;
 
-//    TODO: serviceDiscovery and SocketDiscoveryThread declaration
+//    TODO: serviceDiscovery declaration
+    ServerSocketThread serverSocketThread;
 
     static boolean stateDiscovery = false;
     static boolean stateWifi = false;
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        TODO: serviceDiscovery and serverSocketThread
+//        TODO: serviceDiscovery
+        serverSocketThread = new ServerSocketThread();
         setUpUI();
         mManager = (WifiP2pManager) getSystemService(WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
@@ -283,6 +285,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MainActivity.this, "Configuration Completed", Toast.LENGTH_SHORT).show();
     }
 
+    public void setReceivedText(final String data) {
+        runOnUiThread(() -> textViewReceivedData.setText(data));
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -305,10 +311,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 connect(device);
                 break;
             case R.id.main_activity_button_server_start:
-//              TODO: serverSocketThread
+                serverSocketThread = new ServerSocketThread();
+                serverSocketThread.setUpdateListener(this::setReceivedText);
+                serverSocketThread.execute();
                 break;
             case R.id.main_activity_button_server_stop:
-//              TODO: serverSocketThread not
+                if (serverSocketThread != null) {
+                    serverSocketThread.setInterrupted(true);
+                } else {
+                    Log.d(TAG, "onClick: ServerSocketThread is null");
+                }
                 break;
             case R.id.main_activity_button_client_start:
                 String dataToSend = editTextInput.getText().toString();
